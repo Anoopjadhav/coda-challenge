@@ -24,7 +24,28 @@ function reducer(state = initialState, action) {
                 betList: [...state.betList],
                 checkedCount : action.data
             }
+        case 'updateperson' : 
 
+        let personData = action.data;
+        let tempData = [...state.data];
+        tempData.forEach(ele=>{
+            if(ele.Name === personData.Name){
+                ele.Price = personData.Price;
+            }
+        })
+
+        let tempBetList = [...state.betList];
+        tempBetList.forEach(ele=>{
+            if(ele.Name === personData.Name){
+                ele.Price = personData.Price;
+            }
+        })
+
+        return {
+            data : [...tempData],
+            betList: [...tempBetList],
+            checkedCount : action.data
+        }
         default:
             return state
     }

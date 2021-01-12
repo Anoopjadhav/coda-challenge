@@ -2,7 +2,7 @@ import './App.css';
 import { Route } from 'react-router-dom'
 import Homepage from './Homepage/Homepage'
 import BetPage from './BetPage/BetPage'
-import { useRef, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from './axios'
 import { connect } from 'react-redux'
 import * as actions from './actions'
@@ -32,7 +32,6 @@ console.log(props)
           props.setBetList([]);
         })
     }
-
   }, []);
 
   return (

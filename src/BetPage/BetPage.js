@@ -1,20 +1,39 @@
 import styles from './BetPage.module.css'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
-import {useState} from 'react'
-import { useEffect } from 'react'
+import { useState,useEffect,useRef } from 'react'
+
 import { useHistory } from "react-router-dom";
 
 const BetPage = (props) => {
     let history = useHistory();
     let [currentBet, setCurrentBet] = useState(0);
+    const prevBetRef = useRef();
 
-    console.log(currentBet);
-    useEffect(()=>{
-        setCurrentBet(Math.floor(Math.random()*10 % 10));
-       
+    prevBetRef.current = currentBet;      
+
+    useEffect(() => {
+        setCurrentBet(Math.floor(Math.random() * 10 % 10));
     },[])
-    function back(){
+
+
+    useEffect(() => {
+        if(prevBetRef.current !== currentBet){
+            console.log(prevBetRef.current,currentBet);
+            let temp = [...props.betList];
+            temp.forEach(ele => {
+                if (parseInt(ele.Bet) === parseInt(currentBet)) {
+                    console.log(ele);
+                    ele["Price"] = parseInt(ele["Price"]) * 2;
+                    props.updatePerson(ele);
+                }
+            })
+        }
+    }, [currentBet]);
+
+    
+
+    function back() {
         history.push('/')
     }
     return (
@@ -31,8 +50,14 @@ const BetPage = (props) => {
                                     <div className={styles.name}>{ele.Name}</div>
                                 </div>
                                 <div className={styles.otherData}>
-                                <div className={styles.bet}>
-                                      BET
+                                    <div className={styles.bet}>
+                                        Price
+                                    </div>
+                                    <div className={styles.priceData}>
+                                        {ele.Price}
+                                    </div>
+                                    <div className={styles.bet}>
+                                        BET
                                     </div>
                                     <div className={styles.data}>
                                         {ele.Bet}
@@ -69,7 +94,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setbetlist: (data) => dispatch(actions.setbetlist(data)),
         setdata: (data) => dispatch(actions.setdata(data)),
-        setCheckedCount: (data) => dispatch(actions.setcheckedcount(data))
+        setCheckedCount: (data) => dispatch(actions.setcheckedcount(data)),
+        updatePerson: (data) => dispatch(actions.updateperson(data))
     }
 }
 

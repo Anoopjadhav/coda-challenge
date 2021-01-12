@@ -10,5 +10,8 @@ export const setbetlist = (data) => {
 export const setcheckedcount = (data) => {
     return { type: 'setcheckedcount', data : data }
 }
+export const updateperson = (data) => {
+    return { type: 'updateperson', data : data }
+}
 
 
