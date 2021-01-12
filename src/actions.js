@@ -13,5 +13,9 @@ export const setcheckedcount = (data) => {
 export const updateperson = (data) => {
     return { type: 'updateperson', data : data }
 }
+export const initialLoad = (data) => {
+    return { type: 'initialLoad', data : data }
+}
+
 
 

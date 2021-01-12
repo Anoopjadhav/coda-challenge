@@ -10,32 +10,37 @@ const BetPage = (props) => {
     let [currentBet, setCurrentBet] = useState(0);
     const prevBetRef = useRef();
 
-    prevBetRef.current = currentBet;      
+    let [loaded, setLoaded] = useState(false); 
 
     useEffect(() => {
-        setCurrentBet(Math.floor(Math.random() * 10 % 10));
+        console.log('mount')
+        let value = Math.floor(Math.random() * 10 % 10);
+        setCurrentBet(value);
     },[])
 
 
-    useEffect(() => {
-        if(prevBetRef.current !== currentBet){
-            console.log(prevBetRef.current,currentBet);
-            let temp = [...props.betList];
-            temp.forEach(ele => {
-                if (parseInt(ele.Bet) === parseInt(currentBet)) {
-                    console.log(ele);
-                    ele["Price"] = parseInt(ele["Price"]) * 2;
-                    props.updatePerson(ele);
-                }
-            })
-        }
-    }, [currentBet]);
+    // useEffect(() => {
+    //     if(currentBet !== undefined && currentBet !== 0){
+    //         console.log('bet update')
+    //         let temp = [...props.betList];
+    //         temp.forEach(ele => {
+    //             if (parseInt(ele.Bet) === parseInt(currentBet)) {
+    //                 console.log(ele);
+    //                 ele["Price"] = parseInt(ele["Price"]) * 2;
+    //                 props.updatePerson(ele);
+    //             }
+    //         })
+    //     }
+    // }, [currentBet]);
 
-    
+    useEffect(() => {
+       
+    }, [props]);
 
     function back() {
         history.push('/')
     }
+
     return (
         <div className={styles.betpage}>
             <div className={styles.cardWrapper}>

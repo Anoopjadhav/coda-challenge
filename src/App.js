@@ -29,7 +29,7 @@ console.log(props)
           // setdata(temp);
           props.setdata(temp);
           props.setCheckedCount(0);
-          props.setBetList([]);
+          props.setbetlist([]);
         })
     }
   }, []);

@@ -46,6 +46,7 @@ function reducer(state = initialState, action) {
             betList: [...tempBetList],
             checkedCount : action.data
         }
+
         default:
             return state
     }
