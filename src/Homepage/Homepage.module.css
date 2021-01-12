@@ -1,7 +1,7 @@
 .leftpane{
     width:20vW;
     height:100vH;
-    
+    position: relative;
     background-color:whitesmoke;
 }
 .body{
@@ -115,8 +115,8 @@ input[type='text']{
     background-color: #2F80ED;
     color:white;
     padding:0.5rem 2rem;
-    position: fixed;
-    left:2rem;
+    position: absolute;
     bottom:2rem;
-    width:16rem;
+    left:2rem;;
+    width:calc(100% - 4rem);
 }

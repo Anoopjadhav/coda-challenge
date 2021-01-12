@@ -1,0 +1,94 @@
+.avatarTable{
+    width:3rem;
+    height:3rem;
+}
+
+.card{
+    border:1px solid #2F80ED;
+    border-radius:0.25rem;
+    width:200px;
+    display: flex;
+    padding:1rem;
+    height: 250px;
+    flex-wrap: wrap;
+    position: relative;
+}
+.card + .card {
+    margin-left : 1rem;
+}
+
+
+.cardWrapper{
+    display:flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    height:100vH;
+    padding:1rem 10rem;
+
+}
+.imageWrapper{
+    display:flex;
+    align-items: flex-start;
+    width: 100%;;
+}
+.imageWrapper > div:last-child{
+   padding-left:1rem;
+   font-weight: bold;;
+}
+.bet{
+    text-align: center;
+}
+.data{
+    font-size: 3rem;
+    text-align: center;
+    font-weight: bold;
+    color:#2F80ED;
+}
+.otherData{
+    width:100%;
+}
+.randomValue{
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translateX(-50%) translateY(-50%);
+    color:red;
+    font-size:3rem;
+    font-weight: bold;
+    background-color: whitesmoke;
+    height:100px;
+    width:100px;
+    border-radius: 50%;
+    display: flex;
+        justify-content: center;
+        align-items: center;
+}
+.card[data-class="win"] .status{
+    background-color: #27AE60;;
+}
+.card[data-class="loss"] .status{
+    background-color: #EB5757;;
+}
+.status{
+    width:100%;
+    position: absolute;
+    bottom:0;
+    left:0;
+    text-align: center;
+    padding:0.5rem 0;
+    color:white;
+    font-weight: bold;
+}
+
+.startButton{
+    appearance: none;
+    border:0;
+    background-color: #2F80ED;
+    color:white;
+    padding:0.5rem 2rem;
+    position: absolute;
+    bottom:2rem;
+    left:2rem;;
+    width:8rem;
+}

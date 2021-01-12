@@ -1,51 +1,70 @@
 import './App.css';
 import { Route } from 'react-router-dom'
 import Homepage from './Homepage/Homepage'
+import BetPage from './BetPage/BetPage'
 import { useRef, useEffect, useState } from 'react'
 import axios from './axios'
+import { connect } from 'react-redux'
+import * as actions from './actions'
 
-function App() {
-  const childRef = useRef();
+function App(props) {
+console.log(props)
   let [data, setdata] = useState();
-  let [betList,setBetList] = useState();
+  let [betList, setBetList] = useState();
 
-  function setBetListFun(betList){
+  function setBetListFun(betList) {
     setBetList(betList);
   }
-  function updateData(newData){
+  function updateData(newData) {
     setdata(newData);
   }
   useEffect(() => {
-    axios.get('bets7747a43.json')
-      .then(res => {
-        let temp = res.data;
-        temp.forEach(ele=>{
-          ele["Player Selected"] = false;
+    if (props.data.length === 0) {
+      axios.get('bets7747a43.json')
+        .then(res => {
+          let temp = res.data;
+          temp.forEach(ele => {
+            ele["Player Selected"] = false;
+          })
+          // setdata(temp);
+          props.setdata(temp);
+          props.setCheckedCount(0);
+          props.setBetList([]);
         })
-        setdata(temp);
+    }
 
-      })
   }, []);
-
-  // useEffect(()=>{
-  //   console.log(data);
-  // },[data]);
 
   return (
     <div className="App">
-      <Route path="/" component={
-        () => 
-          <Homepage data={data} setBetList={setBetListFun} updateData={updateData} ref={childRef}></Homepage>
-        
+      <Route exact path="/" component={
+        () =>
+          <Homepage updateData={updateData} props={props}></Homepage>
+
       }></Route>
-       <Route path="/bet" component={
-        () => 
-          <Homepage data={data}></Homepage>
-        
+      <Route exact path="/bet" component={
+        () =>
+         <BetPage></BetPage>
       }></Route>
-     
+
     </div>
   );
 }
 
-export default App;
+
+const mapStoreToProps = (store) => {
+  return {
+      data: store.r.data,
+      betList: store.r.betList,
+      checkedCount : store.r.checkedCount
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+      setbetlist: (data) => dispatch(actions.setbetlist(data)),
+      setdata: (data) => dispatch(actions.setdata(data)),
+      setCheckedCount : (data) => dispatch(actions.setcheckedcount(data))
+  }
+}
+
+export default connect(mapStoreToProps, mapDispatchToProps)(App);

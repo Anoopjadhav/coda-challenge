@@ -2,14 +2,17 @@ import styles from './Homepage.module.css'
 import React, { useState } from 'react'
 import CasinoOutlinedIcon from '@material-ui/icons/CasinoOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
-import { useEffect, useImperativeHandle, forwardRef } from 'react';
+import { useEffect } from 'react';
+import { connect } from 'react-redux'
+import * as actions from '../actions'
+import { useHistory } from "react-router-dom";
 
-const Homepage = forwardRef((props,ref) => {
+const Homepage = (props) => {
 
-    let [checkedCount, setCheckedCount] = useState(0);
+    let history = useHistory();
     let [currentData, setCurrentData] = useState([]);
     let [searchValue, setSearchValue] = useState('');
-    let [betList, setBetList] = useState([]);
+    // let [betList, setBetList] = useState([]);
 
     function searchChange(evt) {
         let value = evt.currentTarget.value;
@@ -32,23 +35,21 @@ const Homepage = forwardRef((props,ref) => {
         let temp = [...currentData];
         temp.forEach((ele, index) => {
             if (index === key) {
-                if (value === true && checkedCount < 9) {
+                if (value === true && props.checkedCount < 9) {
                     ele["Player Selected"] = true;
-                    setCheckedCount(++checkedCount);
+                    let count = props.checkedCount + 1
+                    props.setCheckedCount(count);
                 } else if (value === false) {
                     ele["Player Selected"] = false;
-                    setCheckedCount(--checkedCount);
+                    let count = props.checkedCount - 1
+                    props.setCheckedCount(count);
                 }
             }
         })
 
-        setBetList(getSelectedPlayers());
+        props.setbetlist(getSelectedPlayers());
 
     }
-
-    // useImperativeHandle(ref, () => ({
-    //     getSelectedPlayers : getSelectedPlayers
-    // }));
 
     function getSelectedPlayers() {
         let temp = [...currentData];
@@ -60,15 +61,15 @@ const Homepage = forwardRef((props,ref) => {
         return filteredList;
     }
 
-    useEffect(() => {
-        console.log(checkedCount);
-    }, [checkedCount]);
+    function startPlaying(){
+        history.push('/bet')
+    }
     useEffect(() => {
         setCurrentData(props.data);
     }, []);
-    useEffect(() => {
-        setCurrentData(props.data);
-    }, [props.data]);
+    // useEffect(() => {
+    //     setCurrentData(props.data);
+    // }, [props.data]);
 
     return (
         <div className={styles.homepage}>
@@ -79,9 +80,9 @@ const Homepage = forwardRef((props,ref) => {
                 </div>
                 <div className={styles.leftpanebody}>
                     <div className={styles.betList}>
-                    { betList !== undefined && betList.length > 0 && <div className={styles.playingtext}> { betList.length } Players Playing</div>}
+                    { props.betList !== undefined && props.betList.length > 0 && <div className={styles.playingtext}> { props.betList.length } Players Playing</div>}
                     {
-                        betList !== undefined && betList.map((ele,index)=>{
+                        props.betList !== undefined && props.betList.map((ele,index)=>{
                             return (
                                 <div key={index} className={styles.card}>
                                     <div><img className={styles.avatarTable} src={ele["Profile Image"]} alt="profile pic"></img></div>
@@ -91,7 +92,7 @@ const Homepage = forwardRef((props,ref) => {
                         })
                     }
                     </div>
-                    { betList !== undefined && betList.length > 0 && <button className={styles.startButton}>Start Playing</button>} 
+                    { props.betList !== undefined && props.betList.length > 0 && <button className={styles.startButton} onClick={startPlaying}>Start Playing</button>} 
                 </div>
             </div>
             <div className={styles.body}>
@@ -141,6 +142,21 @@ const Homepage = forwardRef((props,ref) => {
             </div>
         </div>
     )
-})
+}
 
-export default Homepage;
+const mapStoreToProps = (store) => {
+    return {
+        data: store.r.data,
+        betList: store.r.betList,
+        checkedCount : store.r.checkedCount
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setbetlist: (data) => dispatch(actions.setbetlist(data)),
+        setdata: (data) => dispatch(actions.setdata(data)),
+        setCheckedCount : (data) => dispatch(actions.setcheckedcount(data))
+    }
+}
+
+export default connect(mapStoreToProps, mapDispatchToProps)(Homepage);
